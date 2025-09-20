@@ -56,6 +56,8 @@ jobs:
       # ----------------------------
       # Unit / API tests
       # ----------------------------
+      - name: Run container for testing
+        run: docker run -d --rm --name test_student_api dicksonml/student-perf-app:latest
 
       - name: Run tests
         run: pytest tests/ --disable-warnings -q
@@ -63,6 +65,10 @@ jobs:
       - name: Show container logs on failure
         if: failure()
         run: docker logs test_student_api || true
+
+      - name: Stop container
+        if: always()
+        run: docker stop test_student_api || true
 
       # ----------------------------
       # Push image (only if everything passed)
