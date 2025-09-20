@@ -11,7 +11,8 @@ def wait_for_api(url, timeout=120, interval=5):  # wait up to 2 minutes
     while time.time() - start < timeout:
         try:
             response = requests.get(url)
-            if response.status_code == 200:
+            # Ensure API responds with 200 and not HTML fallback (like MLflow UI)
+            if response.status_code == 200 and "Welcome" in response.text or "Student Performance" in response.text:
                 return True
         except requests.exceptions.ConnectionError:
             pass
@@ -27,7 +28,7 @@ def setup_module(module):
         "--name", CONTAINER_NAME, IMAGE_NAME
     ], check=True)
 
-    if not wait_for_api(BASE_URL):
+    if not wait_for_api(f"{BASE_URL}/"):
         subprocess.run(["docker", "logs", CONTAINER_NAME])
         assert False, "API did not become ready in time"
 
@@ -64,4 +65,5 @@ def test_predict_endpoint():
     }
     r = requests.post(f"{BASE_URL}/predict", json=payload)
     assert r.status_code == 200
-    assert "prediction" in r.json()
+    data = r.json()
+    assert "prediction" in data
