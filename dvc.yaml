@@ -1,0 +1,12 @@
+stages:
+  train_model:
+    cmd: python src/train.py
+
+    deps:
+    - data/raw/StudentPerformanceFactors.csv
+    - src/train.py
+    - src/data_processing.py
+    - src/model_pipeline.py
+    outs:
+    - models/linear_model.pkl
+    - models/poly_model.pkl

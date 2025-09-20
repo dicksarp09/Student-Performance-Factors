@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  train_model:
+    cmd: python src/train.py
+    deps:
+    - path: data/raw/StudentPerformanceFactors.csv
+      hash: md5
+      md5: b4a4c6ce906010dc03956046fa8de891
+      size: 641949
+    - path: src/data_processing.py
+      hash: md5
+      md5: 8550cc850b35c573d7d316baf681e8a3
+      size: 518
+    - path: src/model_pipeline.py
+      hash: md5
+      md5: 41d2fd060022613bdf3c0a249e24698c
+      size: 878
+    - path: src/train.py
+      hash: md5
+      md5: 5ed578ad405bb03c5a24b4d682fa1a8a
+      size: 3432
+    outs:
+    - path: models/linear_model.pkl
+      hash: md5
+      md5: b938032c6487b1de738692dddece2fc8
+      size: 8657
+    - path: models/poly_model.pkl
+      hash: md5
+      md5: 37f0b9e261414616c278595eca75457f
+      size: 14913
