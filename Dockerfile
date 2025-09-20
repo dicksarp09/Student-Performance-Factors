@@ -21,7 +21,7 @@ COPY . .
 COPY models/ /app/models/
 
 # Expose ports for Flask and MLflow
-EXPOSE 5000
 EXPOSE 5002
+EXPOSE 5000
 
 CMD ["python", "api/dvc_mlflow_app.py"]
