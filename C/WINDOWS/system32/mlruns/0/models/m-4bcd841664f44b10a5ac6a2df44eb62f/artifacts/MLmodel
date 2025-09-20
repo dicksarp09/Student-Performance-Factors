@@ -1,0 +1,47 @@
+artifact_path: file:C:/WINDOWS/system32/mlruns/0/models/m-4bcd841664f44b10a5ac6a2df44eb62f/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.13
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.6.1
+is_signature_from_type_hint: false
+mlflow_version: 3.4.0
+model_id: m-4bcd841664f44b10a5ac6a2df44eb62f
+model_size_bytes: 12232
+model_uuid: m-4bcd841664f44b10a5ac6a2df44eb62f
+prompts: null
+run_id: be9062bc0ad0419085a5381e34a32c3e
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "Hours_Studied", "required": true}, {"type":
+    "long", "name": "Attendance", "required": true}, {"type": "long", "name": "Sleep_Hours",
+    "required": true}, {"type": "long", "name": "Previous_Scores", "required": true},
+    {"type": "long", "name": "Tutoring_Sessions", "required": true}, {"type": "long",
+    "name": "Physical_Activity", "required": true}, {"type": "string", "name": "Parental_Involvement",
+    "required": true}, {"type": "string", "name": "Access_to_Resources", "required":
+    true}, {"type": "string", "name": "Extracurricular_Activities", "required": true},
+    {"type": "string", "name": "Motivation_Level", "required": true}, {"type": "string",
+    "name": "Internet_Access", "required": true}, {"type": "string", "name": "Family_Income",
+    "required": true}, {"type": "string", "name": "Teacher_Quality", "required": true},
+    {"type": "string", "name": "School_Type", "required": true}, {"type": "string",
+    "name": "Peer_Influence", "required": true}, {"type": "string", "name": "Learning_Disabilities",
+    "required": true}, {"type": "string", "name": "Parental_Education_Level", "required":
+    true}, {"type": "string", "name": "Distance_from_Home", "required": true}, {"type":
+    "string", "name": "Gender", "required": true}]'
+  outputs: '[{"type": "double", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-09-19 19:21:19.691615'
