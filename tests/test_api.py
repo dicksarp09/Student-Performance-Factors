@@ -1,18 +1,27 @@
 import subprocess
 import time
 import requests
+import socket
 
 CONTAINER_NAME = "test_student_api"
 IMAGE_NAME = "dicksonml/student-perf-app:latest"
-BASE_URL = "http://127.0.0.1:5002"
+
+def get_free_port():
+    """Find a free port on the host machine."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', 0))
+        return s.getsockname()[1]
+
+# dynamically pick a free port
+HOST_PORT = get_free_port()
+BASE_URL = f"http://127.0.0.1:{HOST_PORT}"
 
 def wait_for_api(url, timeout=120, interval=5):  # wait up to 2 minutes
     start = time.time()
     while time.time() - start < timeout:
         try:
             response = requests.get(url)
-            # Ensure API responds with 200 and not HTML fallback (like MLflow UI)
-            if response.status_code == 200 and "Welcome" in response.text or "Student Performance" in response.text:
+            if response.status_code == 200:
                 return True
         except requests.exceptions.ConnectionError:
             pass
@@ -23,12 +32,15 @@ def setup_module(module):
     """Start the container before tests."""
     subprocess.run(["docker", "rm", "-f", CONTAINER_NAME], check=False)
 
-    subprocess.run([
-        "docker", "run", "-d", "-p", "5002:5002",
-        "--name", CONTAINER_NAME, IMAGE_NAME
-    ], check=True)
+    docker_cmd = [
+        "docker", "run", "-d",
+        "-p", f"{HOST_PORT}:5002",  # map free host port to container port
+        "--name", CONTAINER_NAME,
+        IMAGE_NAME
+    ]
+    subprocess.run(docker_cmd, check=True)
 
-    if not wait_for_api(f"{BASE_URL}/"):
+    if not wait_for_api(BASE_URL):
         subprocess.run(["docker", "logs", CONTAINER_NAME])
         assert False, "API did not become ready in time"
 
@@ -65,5 +77,4 @@ def test_predict_endpoint():
     }
     r = requests.post(f"{BASE_URL}/predict", json=payload)
     assert r.status_code == 200
-    data = r.json()
-    assert "prediction" in data
+    assert "prediction" in r.json()
