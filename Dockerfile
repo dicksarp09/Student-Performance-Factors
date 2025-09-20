@@ -24,6 +24,4 @@ COPY models/ /app/models/
 EXPOSE 5000
 EXPOSE 5002
 
-# Default command: run API
-CMD mlflow server --host 0.0.0.0 --port 5002 --backend-store-uri sqlite:///mlflow.db --default-artifact-root /mlruns & \
-    python api/dvc_mlflow_app.py
+CMD ["python", "api/dvc_mlflow_app.py"]
